@@ -1,6 +1,6 @@
 Flask==2.3.3
-pandas
+pandas==2.2.2
 python-dateutil==2.8.2
-gunicorn==20.1.0
+gunicorn==21.2.0
 setuptools>=65.0
 wheel>=0.37
