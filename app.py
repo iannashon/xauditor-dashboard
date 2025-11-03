@@ -3,6 +3,7 @@ from flask import Flask, g, render_template, request, url_for, redirect
 import sqlite3
 from pathlib import Path
 import math
+import os
 
 DB_PATH = Path("db/claims.db")
 PER_PAGE = 10
@@ -90,4 +91,5 @@ def claims():
                            total=total)
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    app.run(debug=True, host="0.0.0.0", port=port)
