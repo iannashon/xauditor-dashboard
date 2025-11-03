@@ -50,3 +50,59 @@ Summary of decision:
 1. SQLite chosen for MVP: zero-config, file-based, simple to seed from CSV, and easy to deploy on Replit/Vercel serverless container or simple VM. For the 8-hour prototyping constraint, SQLite reduces setup time dramatically.
 
 2. Postgres tradeoffs: preferred for production (concurrency, robustness, analytics), but requires managed DB or extra infrastructure and increases setup time.
+
+# NHIS Claims Auditor - Setup Guide
+Got it! Here’s the **How to run** section exactly as you can **copy and paste** into your Markdown file:
+
+---
+
+## How to run
+
+1. Clone the repository or copy the project files to your local machine.
+
+2. Create and activate a Python virtual environment (optional but recommended):
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Prepare the database:
+
+   * Run the provided script or commands to create the SQLite database.
+   * Seed it with sample data from CSV files using the data ingestion scripts.
+
+5. Run the Flask application:
+
+   ```bash
+   flask run
+   ```
+
+6. Open your browser and navigate to:
+
+   ```
+   http://localhost:5000
+   ```
+
+
+
+## How to run load_data.py
+
+This script loads claims data from a CSV file (`data/claims.csv`), computes fraud scores, and saves the processed data to a SQLite database (`db/claims.db`).
+
+### Steps to run:
+
+1. Make sure you have your CSV file placed at `data/claims.csv`.
+
+2. Ensure you have Python installed along with required dependencies (`pandas`).
+
+3. Run the script from the project root directory:
+
+   ```bash
+   python load_data.py
