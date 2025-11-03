@@ -1,0 +1,54 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>NHIS Claims Auditor Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>NHIS Claims Auditor — Dashboard</h1>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-value">{{ total }}</div>
+        <div class="kpi-label">Total Claims</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">Tsh {{ "{:,.2f}".format(avg_amount) }}</div>
+        <div class="kpi-label">Average Amount Billed</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">{{ high_count }}</div>
+        <div class="kpi-label">Claims with Score &gt; 75</div>
+      </div>
+    </div>
+
+    <section class="chart-card">
+      <h3>Fraud Score Distribution</h3>
+      <canvas id="distChart" width="400" height="150"></canvas>
+    </section>
+
+    <div style="margin-top:18px;">
+      <a class="btn" href="{{ url_for('claims') }}">Review Claims</a>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      labels: ['Low (0-25)', 'Medium (26-75)', 'High (76-100)'],
+      datasets: [{
+        label: 'Claims',
+        data: [{{ dist['Low'] }}, {{ dist['Medium'] }}, {{ dist['High'] }}]
+      }]
+    };
+    new Chart(document.getElementById('distChart').getContext('2d'), {
+      type: 'bar',
+      data: data,
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  </script>
+</body>
+</html>

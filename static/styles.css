@@ -1,0 +1,21 @@
+/* static/styles.css */
+body { font-family: Arial, sans-serif; background:#f6f8fb; color:#222; margin:0; padding:20px;}
+.container { max-width:1100px; margin:0 auto; background:#fff; padding:18px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.06);}
+.kpi-row { display:flex; gap:12px; margin-bottom:18px;}
+.kpi { flex:1; background:#fafafa; padding:12px; border-radius:8px; text-align:center;}
+.kpi-value { font-size:1.6rem; font-weight:700; }
+.kpi-label { color:#666; font-size:0.9rem; }
+
+.chart-card { background:#fff; padding:12px; border-radius:8px; height:220px; }
+.btn { display:inline-block; background:#2b6cb0; color:#fff; padding:8px 12px; border-radius:6px; text-decoration:none;}
+.btn.small { padding:6px 8px; font-size:0.9rem; }
+
+.search-form { display:flex; gap:8px; margin-bottom:12px; }
+.search-form input { flex:1; padding:8px; border-radius:6px; border:1px solid #ddd; }
+.search-form button { padding:8px 12px; border-radius:6px; border:none; background:#2b6cb0; color:#fff; }
+
+.claims-table { width:100%; border-collapse:collapse; margin-top:8px; }
+.claims-table th, .claims-table td { padding:8px 10px; border-bottom:1px solid #eee; text-align:left; }
+.claims-table th { background:#fbfcfe; position:sticky; top:0; }
+
+.pagination { margin-top:12px; display:flex; gap:10px; align-items:center; }
