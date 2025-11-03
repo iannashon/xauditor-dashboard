@@ -10,11 +10,18 @@
   <div class="container">
     <h1>Claims Review</h1>
 
-    <form method="get" action="{{ url_for('claims') }}" class="search-form">
-      <input type="text" name="q" value="{{ q }}" placeholder="Search Diagnosis or Patient ID">
-      <button type="submit">Search</button>
-      <a href="{{ url_for('index') }}" class="btn small">Back to Dashboard</a>
-    </form>
+  <form method="get" action="{{ url_for('claims') }}" class="search-form">
+  <input type="text" name="q" value="{{ q }}" placeholder="Search Diagnosis or Patient ID">
+  <button type="submit">Search</button>
+
+  <!-- Clear Search button: resets 'q' to empty -->
+  {% if q %}
+    <a href="{{ url_for('claims') }}" class="btn small clear-btn">Clear Search</a>
+  {% endif %}
+
+  <a href="{{ url_for('index') }}" class="btn small">Back to Dashboard</a>
+</form>
+
 
     <p>Total matching claims: {{ total }}</p>
 

@@ -1,4 +1,4 @@
-<!-- templates/index.html -->
+
 <!doctype html>
 <html>
 <head>
@@ -6,6 +6,7 @@
   <title>NHIS Claims Auditor Dashboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
   <div class="container">
@@ -31,24 +32,145 @@
       <canvas id="distChart" width="400" height="150"></canvas>
     </section>
 
-    <div style="margin-top:18px;">
+    <div style="margin-top:80px;">
       <a class="btn" href="{{ url_for('claims') }}">Review Claims</a>
     </div>
   </div>
 
-  <script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('distChart').getContext('2d');
+    
+    // Chart data with enhanced styling
     const data = {
-      labels: ['Low (0-25)', 'Medium (26-75)', 'High (76-100)'],
-      datasets: [{
-        label: 'Claims',
-        data: [{{ dist['Low'] }}, {{ dist['Medium'] }}, {{ dist['High'] }}]
-      }]
+        labels: ['Low Risk (0-25)', 'Medium Risk (26-75)', 'High Risk (76-100)'],
+        datasets: [{
+            label: 'Number of Claims',
+            data: [{{ dist['Low'] }}, {{ dist['Medium'] }}, {{ dist['High'] }}],
+            backgroundColor: [
+                'rgba(16, 185, 129, 0.9)',
+                'rgba(245, 158, 11, 0.9)',
+                'rgba(239, 68, 68, 0.9)'
+            ],
+            borderColor: [
+                'rgb(16, 185, 129)',
+                'rgb(245, 158, 11)',
+                'rgb(239, 68, 68)'
+            ],
+            borderWidth: 2,
+            borderRadius: 8,
+            borderSkipped: false,
+            barPercentage: 0.7,
+            categoryPercentage: 0.8
+        }]
     };
-    new Chart(document.getElementById('distChart').getContext('2d'), {
-      type: 'bar',
-      data: data,
-      options: { responsive: true, maintainAspectRatio: false }
+
+    // Enhanced chart options
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1000,
+            easing: 'easeOutQuart'
+        },
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                padding: 12,
+                cornerRadius: 8,
+                titleColor: '#f8fafc',
+                bodyColor: '#e2e8f0',
+                titleFont: {
+                    size: 13,
+                    weight: 'normal'
+                },
+                bodyFont: {
+                    size: 14,
+                    weight: '600'
+                },
+                callbacks: {
+                    label: function(context) {
+                        const total = {{ dist['Low'] + dist['Medium'] + dist['High'] }};
+                        const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : 0;
+                        return `${context.parsed} claims (${percentage}%)`;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.06)',
+                    drawBorder: false
+                },
+                ticks: {
+                    color: '#64748b',
+                    font: {
+                        size: 12
+                    },
+                    precision: 0
+                },
+                title: {
+                    display: true,
+                    text: 'Number of Claims',
+                    color: '#475569',
+                    font: {
+                        size: 13,
+                        weight: '600'
+                    }
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    color: '#475569',
+                    font: {
+                        size: 12,
+                        weight: '500'
+                    }
+                }
+            }
+        },
+        interaction: {
+            intersect: false,
+            mode: 'index'
+        },
+        onHover: (event, chartElement) => {
+            event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+        },
+        onClick: (event, elements) => {
+            if (elements.length > 0) {
+                const index = elements[0].index;
+                const riskLevels = ['low', 'medium', 'high'];
+                console.log(`Clicked on ${riskLevels[index]} risk claims`);
+                // You can add navigation or filtering functionality here
+            }
+        }
+    };
+
+    // Create chart with enhanced configuration
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
     });
-  </script>
+
+    // Add resize observer for better responsiveness
+    const resizeObserver = new ResizeObserver(entries => {
+        chart.resize();
+    });
+    
+    const chartContainer = document.getElementById('distChart').parentElement;
+    if (chartContainer) {
+        resizeObserver.observe(chartContainer);
+    }
+});
+</script>
 </body>
 </html>
